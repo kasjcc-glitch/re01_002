@@ -5,44 +5,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>资深视效/动画师个人主页</title>
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --card-bg: #ffffff; --text: #334155; --border: #e2e8f0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        :root { 
+            --primary: #2563eb; 
+            --bg: #f8fafc; 
+            --card-bg: #ffffff; 
+            --text: #334155; 
+            --border: #e2e8f0; 
+        }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+        }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6; 
+        }
         
+        /* 顶部滚动进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 101;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
         /* 导航栏样式 */
-        nav { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
-        .nav-links a { text-decoration: none; color: var(--text); margin-left: 2rem; font-weight: 500; cursor: pointer; transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        nav { 
+            background: var(--card-bg); 
+            border-bottom: 1px solid var(--border); 
+            padding: 1rem 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .logo { 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+            color: var(--primary); 
+        }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text); 
+            margin-left: 2rem; 
+            font-weight: 500; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active { 
+            color: var(--primary); 
+        }
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -18px;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+        }
 
         /* 页面内容区 */
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; display: none; animation: fadeIn 0.5s; }
-        .container.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 3rem 2rem; 
+            display: none; 
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .container.active { 
+            display: block; 
+            opacity: 1;
+        }
 
-        h1 { font-size: 2rem; margin-bottom: 1rem; color: #0f172a; }
-        h2 { font-size: 1.5rem; margin: 2rem 0 1rem; color: #0f172a; border-left: 4px solid var(--primary); padding-left: 0.75rem; }
+        h1 { font-size: 2rem; margin-bottom: 1.5rem; color: #0f172a; }
+        h2 { font-size: 1.5rem; margin: 2.5rem 0 1rem; color: #0f172a; border-left: 4px solid var(--primary); padding-left: 0.75rem; }
         h3 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; color: var(--primary); }
         p, li { margin-bottom: 0.5rem; font-size: 1rem; }
         ul { padding-left: 1.5rem; }
 
         /* 项目展示标签样式 */
-        .tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
-        .tab-btn { padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--card-bg); border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.9rem; }
-        .tab-btn.active, .tab-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
-        .tab-content { display: none; background: var(--card-bg); padding: 2rem; border-radius: 8px; border: 1px solid var(--border); }
-        .tab-content.active { display: block; animation: fadeIn 0.4s; }
-        .upload-placeholder { border: 2px dashed var(--border); padding: 3rem; text-align: center; color: #94a3b8; border-radius: 8px; margin-top: 1rem; }
+        .tabs { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 0.5rem; 
+            margin-bottom: 2rem; 
+        }
+        .tab-btn { 
+            padding: 0.5rem 1.5rem; 
+            border: 1px solid var(--border); 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 0.9rem; 
+        }
+        .tab-btn.active, .tab-btn:hover { 
+            background: var(--primary); 
+            color: #fff; 
+            border-color: var(--primary); 
+        }
+        .tab-content { 
+            display: none; 
+            background: var(--card-bg); 
+            padding: 2rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--border); 
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .tab-content.active { 
+            display: block; 
+            opacity: 1;
+        }
+        .upload-placeholder { 
+            border: 2px dashed var(--border); 
+            padding: 3rem; 
+            text-align: center; 
+            color: #94a3b8; 
+            border-radius: 8px; 
+            margin-top: 1rem; 
+        }
+        .upload-placeholder img {
+            width: 300px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
 
+    <!-- 顶部进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
     <nav>
         <div class="logo">VFX Portfolio</div>
         <div class="nav-links">
-            <a class="active" onclick="showPage('home')">主页</a>
-            <a onclick="showPage('projects')">项目展示</a>
-            <a onclick="showPage('contact')">联系我</a>
+            <a class="active" onclick="showPage('home', this)">主页</a>
+            <a onclick="showPage('projects', this)">项目展示</a>
+            <a onclick="showPage('contact', this)">联系我</a>
         </div>
     </nav>
 
@@ -104,49 +224,57 @@
     <div id="projects" class="container">
         <h1>项目展示</h1>
         <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('ani')">动画</button>
-            <button class="tab-btn" onclick="showTab('matte')">数字绘景</button>
-            <button class="tab-btn" onclick="showTab('mmv')">MMV</button>
-            <button class="tab-btn" onclick="showTab('comp')">合成</button>
-            <button class="tab-btn" onclick="showTab('vfx')">特效</button>
-            <button class="tab-btn" onclick="showTab('tvc')">TVC</button>
-            <button class="tab-btn" onclick="showTab('stage')">舞台</button>
+            <button class="tab-btn active" onclick="showTab('ani', this)">动画</button>
+            <button class="tab-btn" onclick="showTab('matte', this)">数字绘景</button>
+            <button class="tab-btn" onclick="showTab('mmv', this)">MMV</button>
+            <button class="tab-btn" onclick="showTab('comp', this)">合成</button>
+            <button class="tab-btn" onclick="showTab('vfx', this)">特效</button>
+            <button class="tab-btn" onclick="showTab('tvc', this)">TVC</button>
+            <button class="tab-btn" onclick="showTab('stage', this)">舞台</button>
         </div>
 
         <div id="ani" class="tab-content active">
             <h3>动画作品展示</h3>
-            <p><img src="assets/meeting_18.png" alt="第十八期动员大会" style="width: 300px; border-radius: 8px; border: 1px solid #e2e8f0;">、Showreel 或项目解析。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <!-- 图片未上传前，这里只会显示一个友好的占位区域 -->
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="matte" class="tab-content">
             <h3>数字绘景作品展示</h3>
-            <p>在这里展示您的 Mattepaiting 作品。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="mmv" class="tab-content">
             <h3>MMV (场景匹配) 作品展示</h3>
-            <p>在这里展示您的摄像机反求与场景匹配项目。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="comp" class="tab-content">
             <h3>合成作品展示</h3>
-            <p>在这里展示您的 Nuke/AE 合成作品。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="vfx" class="tab-content">
             <h3>特效作品展示</h3>
-            <p>在这里展示您的粒子、流体或光效作品。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="tvc" class="tab-content">
             <h3>TVC 广告作品展示</h3>
-            <p>在这里展示您的商业广告项目。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
         <div id="stage" class="tab-content">
             <h3>舞台动画作品展示</h3>
-            <p>在这里展示您的舞台视觉/裸眼3D项目。</p>
-            <div class="upload-placeholder"> 点击或拖拽上传图片 / 视频 / 文字描述</div>
+            <div class="upload-placeholder"> 
+                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
+            </div>
         </div>
     </div>
 
@@ -155,26 +283,39 @@
         <h1>联系我</h1>
         <p>如果您有项目合作需求或技术交流，欢迎通过以下方式与我取得联系：</p>
         <ul style="margin-top:1rem; font-size:1.1rem;">
-            <li> 邮箱：<a href="mailto:jcckas@qq.com">jcckas@qq.com</a></li>
-            <li> 电话：<a href="tel:13627136240">136 2713 6240</a></li>
+            <li>邮箱：<a href="mailto:jcckas@qq.com">jcckas@qq.com</a></li>
+            <li>电话：<a href="tel:13627136240">136 2713 6240</a></li>
         </ul>
     </div>
 
     <script>
-        // 切换主导航
-        function showPage(pageId) {
+        // 页面滚动时，更新顶部进度条
+        window.onscroll = function() {myFunction()};
+        function myFunction() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+
+        // 切换主导航 (优化了参数，更加稳定)
+        function showPage(pageId, element) {
             document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            event.target.classList.add('active');
+            
+            var container = document.getElementById(pageId);
+            container.classList.add('active');
+            element.classList.add('active');
         }
 
         // 切换项目展示标签
-        function showTab(tabId) {
+        function showTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            
+            var tabContent = document.getElementById(tabId);
+            tabContent.classList.add('active');
+            element.classList.add('active');
         }
     </script>
 </body>
