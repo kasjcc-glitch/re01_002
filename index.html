@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页</title>
+    <style>
+        /* --- 全局样式 --- */
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* --- 头部区域 --- */
+        header {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            /* 如果没有头像，先用占位图 */
+            background-color: #ddd; 
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-secondary); font-size: 1.2rem; }
+
+        /* --- 内容卡片 --- */
+        section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        h2 { 
+            font-size: 1.5rem; 
+            margin-bottom: 1rem; 
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--bg-color);
+        }
+
+        /* --- 技能标签 --- */
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tag {
+            background: var(--bg-color);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        /* --- 社交链接按钮 --- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- 移动端适配 --- */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            section { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 头部：头像与简介 -->
+        <header>
+            <!-- 替换 src 为你的头像图片链接 -->
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" class="avatar">
+            <h1>你的名字</h1>
+            <p class="subtitle">前端开发 / 摄影爱好者 / 终身学习者</p>
+        </header>
+
+        <!-- 关于我 -->
+        <section>
+            <h2>👋 关于我</h2>
+            <p>你好！欢迎来到我的个人主页。我是一名热衷于创造美好数字体验的开发者。我喜欢研究新技术，也喜欢在周末带着相机去城市漫步。</p>
+        </section>
+
+        <!-- 技能栈 -->
+        <section>
+            <h2>🛠 技术栈</h2>
+            <div class="tags">
+                <span class="tag">HTML5 / CSS3</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">React / Vue</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">Python</span>
+                <span class="tag">UI Design</span>
+            </div>
+        </section>
+
+        <!-- 项目/作品 (可选) -->
+        <section>
+            <h2>🚀 近期项目</h2>
+            <ul style="padding-left: 1.2rem; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;"><strong>个人博客系统</strong> - 基于 Next.js 构建的高性能博客</li>
+                <li style="margin-bottom: 0.5rem;"><strong>天气查询App</strong> - 使用 OpenWeather API 的小工具</li>
+                <li><strong>自动化脚本集</strong> - Python 办公自动化实践</li>
+            </ul>
+        </section>
+
+        <!-- 联系方式 -->
+        <section style="text-align: center;">
+            <h2>📬 联系我</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">如果你有合作意向或想交个朋友，欢迎通过以下方式联系：</p>
+            <div class="social-links">
+                <a href="mailto:your@email.com" class="btn">发送邮件</a>
+                <a href="https://github.com/yourusername" target="_blank" class="btn btn-outline">GitHub</a>
+                <a href="https://twitter.com/yourusername" target="_blank" class="btn btn-outline">Twitter</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 你的名字. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
