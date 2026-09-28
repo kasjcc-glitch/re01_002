@@ -3,320 +3,592 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资深视效/动画师个人主页</title>
+    <title>Jcc - 个人主页</title>
     <style>
-        :root { 
-            --primary: #2563eb; 
-            --bg: #f8fafc; 
-            --card-bg: #ffffff; 
-            --text: #334155; 
-            --border: #e2e8f0; 
-        }
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-        }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            line-height: 1.6; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* 顶部滚动进度条 */
-        .progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: transparent;
-            z-index: 101;
-        }
-        .progress-bar {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s;
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --accent: #06b6d4;
+            --text-main: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05);
+            --radius: 12px;
         }
 
-        /* 导航栏样式 */
-        nav { 
-            background: var(--card-bg); 
-            border-bottom: 1px solid var(--border); 
-            padding: 1rem 2rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 100; 
-        }
-        .logo { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            color: var(--primary); 
-        }
-        .nav-links a { 
-            text-decoration: none; 
-            color: var(--text); 
-            margin-left: 2rem; 
-            font-weight: 500; 
-            cursor: pointer; 
-            transition: 0.3s; 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+            min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
-        .nav-links a:hover, .nav-links a.active { 
-            color: var(--primary); 
+
+        /* 背景装饰 */
+        .bg-decoration {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            overflow: hidden;
         }
-        .nav-links a.active::after {
+        .bg-decoration::before {
             content: '';
             position: absolute;
-            left: 0;
-            bottom: -18px;
-            width: 100%;
-            height: 3px;
-            background: var(--primary);
+            top: -20%; right: -10%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+        .bg-decoration::after {
+            content: '';
+            position: absolute;
+            bottom: -15%; left: -5%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.05); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        /* 页面内容区 */
-        .container { 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 3rem 2rem; 
-            display: none; 
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
+        /* 导航栏 */
+        header {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s;
         }
-        .container.active { 
-            display: block; 
-            opacity: 1;
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
         }
-
-        h1 { font-size: 2rem; margin-bottom: 1.5rem; color: #0f172a; }
-        h2 { font-size: 1.5rem; margin: 2.5rem 0 1rem; color: #0f172a; border-left: 4px solid var(--primary); padding-left: 0.75rem; }
-        h3 { font-size: 1.2rem; margin: 1.5rem 0 0.5rem; color: var(--primary); }
-        p, li { margin-bottom: 0.5rem; font-size: 1rem; }
-        ul { padding-left: 1.5rem; }
-
-        /* 项目展示标签样式 */
-        .tabs { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 0.5rem; 
-            margin-bottom: 2rem; 
-        }
-        .tab-btn { 
-            padding: 0.5rem 1.5rem; 
-            border: 1px solid var(--border); 
-            background: var(--card-bg); 
-            border-radius: 20px; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-size: 0.9rem; 
-        }
-        .tab-btn.active, .tab-btn:hover { 
-            background: var(--primary); 
-            color: #fff; 
-            border-color: var(--primary); 
-        }
-        .tab-content { 
-            display: none; 
-            background: var(--card-bg); 
-            padding: 2rem; 
-            border-radius: 8px; 
-            border: 1px solid var(--border); 
-            opacity: 0;
-            transition: opacity 0.4s ease-in-out;
-        }
-        .tab-content.active { 
-            display: block; 
-            opacity: 1;
-        }
-        .upload-placeholder { 
-            border: 2px dashed var(--border); 
-            padding: 3rem; 
-            text-align: center; 
-            color: #94a3b8; 
-            border-radius: 8px; 
-            margin-top: 1rem; 
-        }
-        .upload-placeholder img {
-            width: 300px;
+        nav { display: flex; gap: 8px; align-items: center; }
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 1rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            background: rgba(37,99,235,0.08);
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 32px 24px 60px;
+        }
+
+        /* Hero 区域 */
+        .hero-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 48px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        .hero-name {
+            font-size: 56px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            margin-bottom: 12px;
+        }
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* 个人信息条 (姓名 / 年龄 / 学历) */
+        .profile-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            font-size: 15px;
+        }
+        .profile-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 24px;
+            color: var(--text-secondary);
+        }
+        .profile-item + .profile-item {
+            border-left: 1px solid var(--border);
+        }
+        .profile-item .p-label { color: var(--text-muted); margin-right: 6px; }
+        .profile-item .p-value { color: var(--text-main); font-weight: 600; }
+
+        /* 卡片 */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+        .card:hover::before { opacity: 1; }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 18px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        /* 段落与文本 */
+        p { margin-bottom: 10px; color: var(--text-secondary); font-size: 15px; }
+        p:last-child { margin-bottom: 0; }
+        
+        .highlight { color: var(--primary); font-weight: 600; }
+        .warning { color: #f59e0b; font-weight: 500; }
+
+        /* 工作经历 */
+        .timeline-item { margin-bottom: 20px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .timeline-company {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .timeline-period {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+        .timeline-role {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .timeline-projects {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            padding-left: 4px;
+        }
+
+        /* 技能标签 */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .skill-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(6,182,212,0.08));
+            color: var(--primary-dark);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(37,99,235,0.15);
+            transition: all 0.2s;
+        }
+        .skill-tag:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+        }
+
+        /* 流程列表 */
+        .process-list { list-style: none; }
+        .process-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .process-list li:last-child { border-bottom: none; }
+        .process-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* 履历时间线 */
+        .resume-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            align-items: flex-start;
+        }
+        .resume-item:last-child { margin-bottom: 0; }
+        .resume-year {
+            flex-shrink: 0;
+            width: 80px; height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .resume-content {
+            padding-top: 10px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 导航按钮 */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: rgba(37,99,235,0.06);
+            transform: translateY(-2px);
+        }
+
+        /* 分隔线 */
+        .separator {
+            border: none;
+            border-top: 1px dashed var(--border);
+            margin: 18px 0;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            header { padding: 0 16px; }
+            .container { padding: 24px 16px 48px; }
+            .card { padding: 22px; }
+            .hero-section { padding: 36px 20px; }
+            .hero-name { font-size: 42px; }
+            .timeline-header { flex-direction: column; gap: 4px; }
+            .nav-buttons { flex-direction: column; }
+            .btn { justify-content: center; }
+            .profile-bar { margin-top: 16px; padding-top: 14px; }
+            .profile-item { padding: 6px 16px; }
+            .profile-item + .profile-item { border-left: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 顶部进度条 -->
-    <div class="progress-container">
-        <div class="progress-bar" id="myBar"></div>
-    </div>
+<div class="bg-decoration"></div>
 
+<header>
+    <span class="logo">Jcc</span>
     <nav>
-        <div class="logo">VFX Portfolio</div>
-        <div class="nav-links">
-            <a class="active" onclick="showPage('home', this)">主页</a>
-            <a onclick="showPage('projects', this)">项目展示</a>
-            <a onclick="showPage('contact', this)">联系我</a>
-        </div>
+        <a href="index.html" class="active">主页</a>
+        <a href="projects.html">项目展示</a>
+        <a href="contact.html">联系我</a>
     </nav>
+</header>
 
-    <!-- 主页内容 -->
-    <div id="home" class="container active">
-        <h1>关于我</h1>
-        <p>2014年以动画师身份入行，并参与公司合成环节制作。2016年逐步统筹调配整个三维环节，配合公司合成制作。2019年至今，逐步从三维环节向整个项目的统一调配过渡，并跑通全流程（3D资产制作除外）。</p>
-        <p>熟悉内外部上下游沟通流程和甲乙方沟通流程，具备一定程度优化管线和降本增效的能力（制作方案优化与新技术应用）。</p>
+<div class="container">
 
-        <h2>主要从业经历</h2>
-        <h3>2019 - 2026 | 武汉躁点数码</h3>
-        <p><strong>负责环节：</strong>预演 / 动画 / 跟踪 / 渲染 / 合成 / 光效 / 特效</p>
-        <p><strong>主要参与项目：</strong></p>
-        <ul>
-            <li><strong>电影/电视剧：</strong>鹤唳华亭、鹿鼎记、我的女友是机器人、千古玦尘、倚天屠龙记之九阳神功、圣火雄风、大侠卢小鱼、长月烬明、反人类暴行、九阴真经、唐探1900、流水迢迢、唐宫奇案、凤凰台上、早春、追诉</li>
-            <li><strong>待播/展映作品：</strong>十万狂花入梦来、大唐贵妃（2026上海电影节闭门展映）、以你为名的夏天</li>
-            <li><strong>动画/TVC/舞台：</strong>环太平洋TV、OPPO广告、浙江卫视环保广告、红旗H5广告、泡泡马特乐园舞台动画</li>
-        </ul>
+    <!-- Hero 区域 - 姓名 -->
+    <div class="hero-section">
+        <h1 class="hero-name">Jcc</h1>
+        <p class="hero-subtitle">影视后期 / 三维动画</p>
 
-        <h3>2016 - 2019 | 武汉安平泰科技</h3>
-        <p><strong>负责环节：</strong>预演 / 动画 / 跟踪 / 渲染 / 合成</p>
-        <p><strong>主要参与项目：</strong>青云志、半妖倾城、河神、铁道飞虎、追龙、冒险王卫斯理之支离人</p>
-
-        <h3>2014 - 2016 | 香港悟童数码</h3>
-        <p><strong>负责环节：</strong>预演 / 动画 / 跟踪 / 合成</p>
-        <p><strong>主要参与项目：</strong>美人鱼、危城、不可思议、无心法师1、树大招风</p>
-
-        <h2>参与制作流程</h2>
-        <ul>
-            <li>影视剧后期制作全流程（不含剪辑调色）</li>
-            <li>TVC、宣传片后期制作全流程</li>
-            <li>影视动画、片头动画制作流程</li>
-            <li>游戏动作、游戏过场动画制作流程</li>
-        </ul>
-
-        <h2>专业技能</h2>
-        <h3>可熟练应用</h3>
-        <ul>
-            <li>Previs Layout（预演）环节制作（Maya）</li>
-            <li>影视剧 MMV（场景匹配）环节制作（PFTrack, Maya）</li>
-            <li>Ani（动画）环节制作（Maya）</li>
-            <li>光效制作（AE, Nuke）</li>
-            <li>影视剧合成环节（Nuke, AE）</li>
-            <li>软件：Maya, 3ds Max, Nuke, AE, PS, Premiere, PFTrack, Blender, Mocha</li>
-        </ul>
-        <h3>一定程度上可应用</h3>
-        <ul>
-            <li>概念设计和数字绘景（PS, Blender）</li>
-            <li>绑定环节（Maya）</li>
-            <li>灯光渲染环节制作（Blender, Redshift）</li>
-            <li>特效环节（Maya, MASH, Blender）</li>
-            <li>宣传剪辑（Premiere）</li>
-            <li>AI制作（熟练使用动作迁移制作）</li>
-            <li>高斯泼溅应用方案（Blender）</li>
-        </ul>
-    </div>
-
-    <!-- 项目展示内容 -->
-    <div id="projects" class="container">
-        <h1>项目展示</h1>
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('ani', this)">动画</button>
-            <button class="tab-btn" onclick="showTab('matte', this)">数字绘景</button>
-            <button class="tab-btn" onclick="showTab('mmv', this)">MMV</button>
-            <button class="tab-btn" onclick="showTab('comp', this)">合成</button>
-            <button class="tab-btn" onclick="showTab('vfx', this)">特效</button>
-            <button class="tab-btn" onclick="showTab('tvc', this)">TVC</button>
-            <button class="tab-btn" onclick="showTab('stage', this)">舞台</button>
-        </div>
-
-        <div id="ani" class="tab-content active">
-            <h3>动画作品展示</h3>
-            <!-- 图片未上传前，这里只会显示一个友好的占位区域 -->
-            <div class="upload-placeholder"> 
-                  <p><img src="assets/meeting_18.png" alt="第十八期动员大会" style="width: 300px; border-radius: 8px; border: 1px solid #e2e8f0;">、Showreel 或项目解析</p>
-            </div>
-        </div>
-        <div id="matte" class="tab-content">
-            <h3>数字绘景作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
-        </div>
-        <div id="mmv" class="tab-content">
-            <h3>MMV (场景匹配) 作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
-        </div>
-        <div id="comp" class="tab-content">
-            <h3>合成作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
-        </div>
-        <div id="vfx" class="tab-content">
-            <h3>特效作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
-        </div>
-        <div id="tvc" class="tab-content">
-            <h3>TVC 广告作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
-        </div>
-        <div id="stage" class="tab-content">
-            <h3>舞台动画作品展示</h3>
-            <div class="upload-placeholder"> 
-                <p>（图片资源待补充）<br><br>点击或拖拽上传图片 / 视频 / 文字描述</p>
-            </div>
+        <!-- 个人信息条 (姓名 / 年龄 / 学历) -->
+        <div class="profile-bar">
+            <span class="profile-item"><span class="p-label">姓名：</span><span class="p-value">金楚宸</span></span>
+            <span class="profile-item"><span class="p-label">年龄：</span><span class="p-value">33</span></span>
+            <span class="profile-item"><span class="p-label">学历：</span><span class="p-value">大专</span></span>
         </div>
     </div>
 
-    <!-- 联系我内容 -->
-    <div id="contact" class="container">
-        <h1>联系我</h1>
-        <p>如果您有项目合作需求或技术交流，欢迎通过以下方式与我取得联系：</p>
-        <ul style="margin-top:1rem; font-size:1.1rem;">
-            <li>邮箱：<a href="mailto:jcckas@qq.com">jcckas@qq.com</a></li>
-            <li>电话：<a href="tel:13627136240">136 2713 6240</a></li>
+    <!-- 主要从业经历 -->
+    <div class="card">
+        <h2 class="card-title">主要从业经历</h2>
+
+        <div class="timeline-item">
+            <div class="timeline-header">
+                <span class="timeline-company">香港悟童数码</span>
+                <span class="timeline-period">2014 - 2016</span>
+            </div>
+            <div class="timeline-role">预演 / 动画 / 跟踪 / 合成</div>
+            <div class="timeline-projects">
+                主要参与项目：美人鱼 &nbsp;|&nbsp; 危城 &nbsp;|&nbsp; 不可思议 &nbsp;|&nbsp; 无心法师1 &nbsp;|&nbsp; 树大招风
+            </div>
+        </div>
+
+        <hr class="separator">
+
+        <div class="timeline-item">
+            <div class="timeline-header">
+                <span class="timeline-company">武汉安平泰科技</span>
+                <span class="timeline-period">2016 - 2019</span>
+            </div>
+            <div class="timeline-role">预演 / 动画 / 跟踪 / 渲染 / 合成</div>
+            <div class="timeline-projects">
+                主要参与项目：青云志 &nbsp;|&nbsp; 半妖倾城 &nbsp;|&nbsp; 河神 &nbsp;|&nbsp; 铁道飞虎 &nbsp;|&nbsp; 追龙 &nbsp;|&nbsp; 冒险王卫斯理之支离人
+            </div>
+            <div class="timeline-projects" style="margin-top:6px;">
+                VR项目（U3D）
+            </div>
+        </div>
+
+        <hr class="separator">
+
+        <div class="timeline-item">
+            <div class="timeline-header">
+                <span class="timeline-company">武汉躁点数码</span>
+                <span class="timeline-period">2019 - 2026</span>
+            </div>
+            <div class="timeline-role">预演 / 动画 / 跟踪 / 渲染 / 合成 / 光效 / 特效</div>
+            <div class="timeline-projects">
+                主要参与项目：
+            </div>
+
+            <p style="margin-top:8px; font-size:14px; color:var(--text-main); font-weight:500;">【电影 / 电视剧】</p>
+            <div class="timeline-projects">
+                鹤唳华亭 &nbsp;|&nbsp; 鹿鼎记 &nbsp;|&nbsp; 我的女友是机器人 &nbsp;|&nbsp; 千古玦尘 &nbsp;|&nbsp; 倚天屠龙记之九阳神功 &nbsp;|&nbsp; 圣火雄风 &nbsp;|&nbsp; 大侠卢小鱼 &nbsp;|&nbsp; 长月烬明 &nbsp;|&nbsp; 反人类暴行 &nbsp;|&nbsp; 九阴真经 &nbsp;|&nbsp; 唐探1900 &nbsp;|&nbsp; 流水迢迢 &nbsp;|&nbsp; 唐宫奇案 &nbsp;|&nbsp; 凤凰台上 &nbsp;|&nbsp; 早春晴朗 &nbsp;|&nbsp; 追诉
+            </div>
+            <div class="timeline-projects">
+                十万狂花入梦来<span class="warning">（未播）</span> &nbsp;|&nbsp; 大唐贵妃<span class="warning">（未播 2026上海电影节闭门展映）</span> &nbsp;|&nbsp; 以你为名的夏天<span class="warning">（未播）</span>
+            </div>
+
+            <p style="margin-top:8px; font-size:14px; color:var(--text-main); font-weight:500;">【动画】</p>
+            <div class="timeline-projects">环太平洋TV</div>
+
+            <p style="margin-top:8px; font-size:14px; color:var(--text-main); font-weight:500;">【TVC】</p>
+            <div class="timeline-projects">&nbsp; 浙江卫视环保广告 &nbsp;|&nbsp; 红旗H5广告</div>
+
+            <p style="margin-top:8px; font-size:14px; color:var(--text-main); font-weight:500;">【舞台】</p>
+            <div class="timeline-projects">泡泡玛特乐园舞台动画</div>
+
+            <p class="warning" style="margin-top:14px; font-size:13px;">* 多数项目背后字幕可查演职人员表，CMDB可查。</p>
+        </div>
+    </div>
+
+    <!-- 参与制作的流程 -->
+    <div class="card">
+        <h2 class="card-title">参与制作的流程</h2>
+        <ul class="process-list">
+            <li><span class="process-num">1</span> 影视剧后期制作全流程（不包括影视剧的剪辑调色环节，只是后期全流程）</li>
+            <li><span class="process-num">2</span> TVC 宣传片 后期制作全流程</li>
+            <li><span class="process-num">3</span> 影视动画 片头动画的动画环节制作流程</li>
+            <li><span class="process-num">4</span> 游戏动作 游戏过场动画环节制作流程</li>
         </ul>
     </div>
 
-    <script>
-        // 页面滚动时，更新顶部进度条
-        window.onscroll = function() {myFunction()};
-        function myFunction() {
-            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            var scrolled = (winScroll / height) * 100;
-            document.getElementById("myBar").style.width = scrolled + "%";
-        }
+    <!-- 技能 -->
+    <div class="card">
+        <h2 class="card-title">技能</h2>
 
-        // 切换主导航 (优化了参数，更加稳定)
-        function showPage(pageId, element) {
-            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
-            
-            var container = document.getElementById(pageId);
-            container.classList.add('active');
-            element.classList.add('active');
-        }
+        <h3 style="font-size:15px; font-weight:600; color:var(--text-main); margin-bottom:10px;">一定程度上可应用的技能</h3>
+        <div class="skill-tags">
+            <span class="skill-tag">概念设计和数字绘景（PS / Blender）</span>
+            <span class="skill-tag">绑定环节（Maya）</span>
+            <span class="skill-tag">灯光渲染环节制作（Blender RS）</span>
+            <span class="skill-tag">特效环节（Maya MASH / Blender）</span>
+            <span class="skill-tag">宣传剪辑（PR）</span>
+            <span class="skill-tag">AI制作（可熟练使用动作迁移制作）</span>
+            <span class="skill-tag">高斯泼溅应用方案（Blender）</span>
+        </div>
 
-        // 切换项目展示标签
-        function showTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            var tabContent = document.getElementById(tabId);
-            tabContent.classList.add('active');
-            element.classList.add('active');
-        }
-    </script>
+        <h3 style="font-size:15px; font-weight:600; color:var(--text-main); margin:18px 0 10px;">可熟练应用技能</h3>
+        <div class="skill-tags">
+            <span class="skill-tag">Previs Layout（预演）环节制作（Maya）</span>
+            <span class="skill-tag">影视剧MMV（场景匹配）环节制作（PFTrack / Maya）</span>
+            <span class="skill-tag">动画环节制作（Maya）</span>
+            <span class="skill-tag">游戏动作（Maya / Max）</span>
+            <span class="skill-tag">光效制作（AE / Nuke）</span>
+            <span class="skill-tag">影视剧合成环节（Nuke / AE）</span>
+        </div>
+
+        <h3 style="font-size:15px; font-weight:600; color:var(--text-main); margin:18px 0 10px;">常用软件</h3>
+        <div class="skill-tags">
+            <span class="skill-tag">Maya</span>
+            <span class="skill-tag">3ds Max</span>
+            <span class="skill-tag">Nuke</span>
+            <span class="skill-tag">AE</span>
+            <span class="skill-tag">PS</span>
+            <span class="skill-tag">Premiere</span>
+            <span class="skill-tag">PFTrack</span>
+            <span class="skill-tag">Blender</span>
+            <span class="skill-tag">Mocha</span>
+        </div>
+    </div>
+
+    <!-- 履历介绍 (已按你的要求精确修改) -->
+    <div class="card">
+        <h2 class="card-title">履历介绍</h2>
+        
+        <div class="resume-item">
+            <div class="resume-year">2014-2016</div>
+            <div class="resume-content">
+                入职动画师，负责影视动画和游戏动作，并参与公司合成环节制作。
+            </div>
+        </div>
+        
+        <div class="resume-item">
+            <div class="resume-year">2016-2019</div>
+            <div class="resume-content">
+                影视方面，从单环节制作逐步统筹调配整个三维环节，也配合公司的合成制作。并参与公司VR项目制作，负责Timeline的动作制作。
+            </div>
+        </div>
+        
+        <div class="resume-item">
+            <div class="resume-year">2019-2026</div>
+            <div class="resume-content">
+                从负责三维环节过度到全流程负责。（3D资产制作除外）
+            </div>
+        </div>
+    </div>
+
+    <!-- 自我介绍 -->
+    <div class="card">
+        <h2 class="card-title">自我介绍</h2>
+        <p>熟悉领域影视动画、影视后期、游戏动作、TVC广告、TVC广告</p>
+    </div>
+
+    <!-- 导航按钮 -->
+    <div class="nav-buttons">
+        <a href="projects.html" class="btn btn-outline">← 项目展示</a>
+        <a href="contact.html" class="btn btn-primary">联系我 →</a>
+    </div>
+
+</div>
+
+<footer>Jcc Portfolio &copy; 2026</footer>
+
 </body>
 </html>
+
+
