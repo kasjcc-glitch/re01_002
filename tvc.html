@@ -66,19 +66,22 @@
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
         }
+
+        /* 作品卡片（外链） */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .video-card {
+        .work-card {
+            display: block; text-decoration: none; color: inherit;
             background: var(--bg-card); border: 1px solid var(--border);
             border-radius: var(--radius); overflow: hidden; cursor: pointer;
             box-shadow: var(--shadow); transition: all 0.3s;
         }
-        .video-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
-        .thumb { position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; }
-        .thumb video {
+        .work-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        .thumb { position: relative; width: 100%; padding-top: 56.25%; background: #0b1220; overflow: hidden; }
+        .thumb img {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0.8; transition: 0.3s;
+            object-fit: cover; opacity: 0.85; transition: 0.3s;
         }
-        .video-card:hover .thumb video { opacity: 1; transform: scale(1.05); }
+        .work-card:hover .thumb img { opacity: 1; transform: scale(1.05); }
         .play-btn {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 60px; height: 60px;
@@ -90,23 +93,11 @@
             content: ''; border-style: solid; border-width: 10px 0 10px 18px;
             border-color: transparent transparent transparent white; margin-left: 4px;
         }
-        .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background: var(--primary); }
+        .work-card:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background: var(--primary); }
         .info { padding: 18px 20px; }
-        .info h3 { font-size: 15px; font-weight: 600; color: var(--text-main); }
-        .lightbox {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
-            z-index: 9999; align-items: center; justify-content: center; flex-direction: column;
-        }
-        .lightbox video {
-            max-width: 90%; max-height: 80vh; border-radius: 8px;
-            box-shadow: 0 0 30px rgba(37,99,235,0.3); outline: none;
-        }
-        .close-btn {
-            position: absolute; top: 20px; right: 30px; color: white;
-            font-size: 40px; cursor: pointer; transition: 0.3s; line-height: 1;
-        }
-        .close-btn:hover { color: var(--primary); transform: rotate(90deg); }
+        .info h3 { font-size: 16px; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+        .info .link-hint { font-size: 13px; color: var(--primary); font-weight: 500; }
+
         .nav-buttons { display: flex; gap: 12px; margin-top: 40px; }
         .btn {
             display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
@@ -143,51 +134,28 @@
     <div class="page-title"><h1>TVC广告</h1></div>
     <div class="video-grid">
 
-            <div class="video-card" onclick="openLightbox('tvc_01.mp4')">
-                <div class="thumb">
-                    <video src="tvc_01.mp4" muted preload="metadata"></video>
-                    <div class="play-btn"></div>
-                </div>
-                <div class="info">
-                    <h3>作品 01</h3>
-                </div>
+        <a class="work-card" href="https://www.xinpianchang.com/a13831814" target="_blank" rel="noopener">
+            <div class="thumb">
+                <img src="assets/Snipaste_2026-09-29_19-20-55.png" alt="红旗广告">
+                <div class="play-btn"></div>
             </div>
-            <div class="video-card" onclick="openLightbox('tvc_02.mp4')">
-                <div class="thumb">
-                    <video src="tvc_02.mp4" muted preload="metadata"></video>
-                    <div class="play-btn"></div>
-                </div>
-                <div class="info">
-                    <h3>作品 02</h3>
-                </div>
+            <div class="info">
+                <h3>红旗广告</h3>
+                <span class="link-hint">在新片场查看 →</span>
             </div>
-            <div class="video-card" onclick="openLightbox('tvc_03.mp4')">
-                <div class="thumb">
-                    <video src="tvc_03.mp4" muted preload="metadata"></video>
-                    <div class="play-btn"></div>
-                </div>
-                <div class="info">
-                    <h3>作品 03</h3>
-                </div>
+        </a>
+
+        <a class="work-card" href="https://www.xinpianchang.com/a13831816" target="_blank" rel="noopener">
+            <div class="thumb">
+                <img src="assets/Snipaste_2026-09-29_19-22-45.png" alt="环保广告">
+                <div class="play-btn"></div>
             </div>
-            <div class="video-card" onclick="openLightbox('tvc_04.mp4')">
-                <div class="thumb">
-                    <video src="tvc_04.mp4" muted preload="metadata"></video>
-                    <div class="play-btn"></div>
-                </div>
-                <div class="info">
-                    <h3>作品 04</h3>
-                </div>
+            <div class="info">
+                <h3>环保广告</h3>
+                <span class="link-hint">在新片场查看 →</span>
             </div>
-            <div class="video-card" onclick="openLightbox('tvc_05.mp4')">
-                <div class="thumb">
-                    <video src="tvc_05.mp4" muted preload="metadata"></video>
-                    <div class="play-btn"></div>
-                </div>
-                <div class="info">
-                    <h3>作品 05</h3>
-                </div>
-            </div>
+        </a>
+
     </div>
     <div class="nav-buttons">
         <a href="projects.html" class="btn btn-outline">← 项目列表</a>
@@ -195,30 +163,8 @@
     </div>
 </div>
 <footer>Jcc Portfolio &copy; 2026</footer>
-<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
-    <span class="close-btn">&times;</span>
-    <video id="lb-video" controls></video>
-</div>
 <script>
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-    const lb = document.getElementById('lightbox');
-    const lbVideo = document.getElementById('lb-video');
-    function openLightbox(src) {
-        lb.style.display = 'flex'; lbVideo.src = src; lbVideo.play();
-        document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox(e) {
-        if (e.target === lb || e.target.classList.contains('close-btn')) {
-            lb.style.display = 'none'; lbVideo.pause(); lbVideo.src = '';
-            document.body.style.overflow = '';
-        }
-    }
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lb.style.display === 'flex') {
-            lb.style.display = 'none'; lbVideo.pause(); lbVideo.src = '';
-            document.body.style.overflow = '';
-        }
-    });
 </script>
 </body>
 </html>
