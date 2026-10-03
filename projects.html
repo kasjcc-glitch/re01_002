@@ -87,14 +87,6 @@
         }
         .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
         .card h3 { font-size: 1.5rem; margin-bottom: 0; color: var(--text-main); }
-        /* TVC 卡片：受密码保护，与其余卡片外观一致，仅右上角加锁定角标 */
-        .card-locked { position: relative; cursor: pointer; }
-        .lock-badge {
-            position: absolute; top: 14px; right: 14px; font-size: 12px; font-weight: 600;
-            color: var(--primary); background: rgba(37,99,235,0.10);
-            border: 1px solid rgba(37,99,235,0.25);
-            padding: 3px 10px; border-radius: 999px;
-        }
         .nav-buttons { display: flex; gap: 12px; margin-top: 40px; }
         .btn {
             display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
@@ -136,10 +128,7 @@
         <a href="vfx.html" class="card"><h3>光效特效</h3></a>
         <a href="matchmove.html" class="card"><h3>跟踪匹配</h3></a>
         <a href="matte-painting.html" class="card"><h3>数字绘景</h3></a>
-        <!-- TVC广告：仅此卡片挂密码门，密码 001226 -->
-        <div class="card card-locked" onclick="openPasswordGate('001226', 'tvc.html')">
-            <h3>TVC广告</h3>
-        </div>
+        <a href="tvc.html" class="card"><h3>TVC广告</h3></a>
         <a href="previs.html" class="card"><h3>数字预演</h3></a>
         <!-- 本轮新增：三个子选项 -->
         <a href="ai-application.html" class="card"><h3>AI应用</h3></a>
@@ -155,17 +144,6 @@
 
 <script>
     setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-
-    // 密码门：仅 TVC广告 使用；输入正确才跳转，错误/取消均不跳转
-    function openPasswordGate(password, target) {
-        var input = prompt('请输入访问密码：');
-        if (input === null) return;
-        if (input === password) {
-            window.location.href = target;
-        } else {
-            alert('密码错误，无法访问');
-        }
-    }
 </script>
 </body>
 </html>
